@@ -1,14 +1,24 @@
 import './bootstrap';
 import { createApp } from 'vue';
 
-// Import components manually
-import ExampleComponent from './Modules/Example/Components/ExampleComponent.vue';
-import UserCard from './Modules/User/Components/UserCard.vue';
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
-const app = createApp({});
+// Dynamic module loading based on path
+const modules = {
+    '/': () => import('./Module/Users/UsersIndex.vue'),
+    '/users': () => import('./Module/Users/UsersIndex.vue'),
+    '/products': () => import('./Module/Products/ProductsIndex.vue'),
+    '/orders': () => import('./Module/Orders/OrdersIndex.vue')
+};
 
-// Register components manually
-app.component('ExampleComponent', ExampleComponent);
-app.component('UserCard', UserCard);
+const currentPath = window.location.pathname;
+const moduleLoader = modules[currentPath] || modules['/'];
 
-app.mount('#app');
+moduleLoader().then(component => {
+    const app = createApp(component.default);
+    app.use(Toast, { position: "top-right", timeout: 3000 });
+    app.mount('#app');
+}).catch(error => {
+    console.error('Failed to load module:', error);
+});
