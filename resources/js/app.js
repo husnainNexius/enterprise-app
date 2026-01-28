@@ -1,14 +1,23 @@
 import './bootstrap';
 import { createApp } from 'vue';
 
-// Import components manually
-import ExampleComponent from './Modules/Example/Components/ExampleComponent.vue';
-import UserCard from './Modules/User/Components/UserCard.vue';
+// Toast notifications
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
-const app = createApp({});
+// Import Users module main component
+import UsersIndex from './Module/Users/UsersIndex.vue';
 
-// Register components manually
-app.component('ExampleComponent', ExampleComponent);
-app.component('UserCard', UserCard);
+// Create app
+const app = createApp(UsersIndex);
 
+// Register global plugins
+app.use(Toast, {
+    position: "top-right",
+    timeout: 3000,
+    closeOnClick: true,
+    pauseOnHover: true
+});
+
+// Mount to DOM
 app.mount('#app');
