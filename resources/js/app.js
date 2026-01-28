@@ -1,23 +1,24 @@
 import './bootstrap';
 import { createApp } from 'vue';
 
-// Toast notifications
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
-// Import Users module main component
-import UsersIndex from './Module/Users/UsersIndex.vue';
+// Dynamic module loading based on path
+const modules = {
+    '/': () => import('./Module/Users/UsersIndex.vue'),
+    '/users': () => import('./Module/Users/UsersIndex.vue'),
+    '/products': () => import('./Module/Products/ProductsIndex.vue'),
+    '/orders': () => import('./Module/Orders/OrdersIndex.vue')
+};
 
-// Create app
-const app = createApp(UsersIndex);
+const currentPath = window.location.pathname;
+const moduleLoader = modules[currentPath] || modules['/'];
 
-// Register global plugins
-app.use(Toast, {
-    position: "top-right",
-    timeout: 3000,
-    closeOnClick: true,
-    pauseOnHover: true
+moduleLoader().then(component => {
+    const app = createApp(component.default);
+    app.use(Toast, { position: "top-right", timeout: 3000 });
+    app.mount('#app');
+}).catch(error => {
+    console.error('Failed to load module:', error);
 });
-
-// Mount to DOM
-app.mount('#app');

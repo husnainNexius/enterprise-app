@@ -56,4 +56,14 @@ class UserController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function index()
+    {
+        try {
+            $users = \App\Models\User::select('id', 'name', 'email')->get();
+            return response()->json($users, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }
