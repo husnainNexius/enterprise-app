@@ -9,7 +9,8 @@ const modules = {
     '/': () => import('./Module/Users/UsersIndex.vue'),
     '/users': () => import('./Module/Users/UsersIndex.vue'),
     '/products': () => import('./Module/Products/ProductsIndex.vue'),
-    '/orders': () => import('./Module/Orders/OrdersIndex.vue')
+    '/orders': () => import('./Module/Orders/OrdersIndex.vue'),
+    '/categories': () => import('./Module/Categories/CategoriesIndex.vue')
 };
 
 const currentPath = window.location.pathname;

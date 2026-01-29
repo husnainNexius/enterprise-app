@@ -17,6 +17,15 @@ Route::get('/users', [\App\Http\Controllers\UserController::class, 'index']);
 // Product routes
 Route::apiResource('products', \App\Http\Controllers\ProductController::class);
 
+// Category routes
+Route::prefix('categories')->group(function () {
+    Route::get('tree', [\App\Http\Controllers\CategoryController::class, 'tree']);
+    Route::put('update-order', [\App\Http\Controllers\CategoryController::class, 'updateOrder']);
+});
+
+// Category resource routes
+Route::apiResource('categories', \App\Http\Controllers\CategoryController::class);
+
 // Order routes - additional routes first to avoid conflicts
 Route::prefix('orders')->group(function () {
     Route::get('{id}/items', [\App\Http\Controllers\OrderController::class, 'items']);
