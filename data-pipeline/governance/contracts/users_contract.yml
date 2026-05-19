@@ -1,0 +1,59 @@
+# Step 9: GOVERN — Data Contract for the users table
+# Formal agreement between source team and analytics team
+
+contract:
+  name: "postgres_users"
+  version: "1.0.0"
+  owner: "backend-team@yourcompany.com"       # ← Replace
+  consumers:
+    - "analytics@yourcompany.com"             # ← Replace
+
+  description: |
+    User accounts from the main PostgreSQL database.
+    Source of truth for customer identity.
+
+  sla:
+    freshness: "6 hours"
+    availability: "99.9%"
+
+  schema:
+    properties:
+      id:
+        type: "integer"
+        required: true
+        unique: true
+
+      email:
+        type: "string"
+        required: true
+        unique: true
+        format: "email"
+        pii: true                             # Marked as PII
+
+      first_name:
+        type: "string"
+        required: true
+        pii: true
+
+      last_name:
+        type: "string"
+        required: true
+        pii: true
+
+      status:
+        type: "string"
+        required: true
+        enum: ["active", "inactive", "suspended", "deleted"]
+
+      created_at:
+        type: "timestamp"
+        required: true
+
+      updated_at:
+        type: "timestamp"
+        required: true
+        description: "Must update on every row change (used for CDC)"
+
+  breaking_changes:
+    notification: "14 days advance notice"
+    approval_required: true

@@ -1,0 +1,31 @@
+# Credentials (NEVER commit these)
+.env
+credentials/
+service-account.json
+*.json.key
+
+# Python
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Data files
+data/raw/
+data/incoming/
+data/archive/
+state/
+
+# dbt
+dbt_pipeline/target/
+dbt_pipeline/dbt_packages/
+dbt_pipeline/logs/
+
+# Airflow
+orchestration/logs/
+orchestration/airflow.db
+orchestration/airflow.cfg
+
+# IDE
+.vscode/
+.idea/

@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: "Customer dimension — one row per customer with lifetime metrics"
+    meta:
+      owner: "analytics-engineering"
+      contains_pii: true
+    columns:
+      - name: customer_key
+        tests: [unique, not_null]
+      - name: user_id
+        tests: [unique, not_null]
+      - name: email
+        meta: { classification: "pii" }
+        tests: [unique, not_null]
+      - name: customer_segment
+        tests:
+          - accepted_values:
+              values: ['premium', 'regular', 'new', 'prospect']
+      - name: lifetime_spend
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+  - name: fct_orders
+    description: "Order fact table — one row per order"
+    columns:
+      - name: order_id
+        tests: [unique, not_null]
+      - name: customer_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_key
+      - name: order_amount
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100000
+      - name: order_status
+        tests:
+          - accepted_values:
+              values: ['pending', 'processing', 'shipped', 'delivered', 'cancelled']

@@ -1,0 +1,32 @@
+# ============================================================
+# DATA PIPELINE - Python Dependencies
+# Install: pip install -r requirements.txt
+# ============================================================
+
+# --- Step 1: COLLECT (Extraction) ---
+requests
+pandas
+python-dotenv
+sqlalchemy
+
+# --- Step 2: STORE RAW (Cloud Storage) ---
+google-cloud-storage
+pyarrow
+
+# --- Step 4: WAREHOUSE (BigQuery) ---
+google-cloud-bigquery
+google-cloud-bigquery-storage
+db-dtypes
+
+# --- Step 3 & 5: TRANSFORM + QUALITY (dbt) ---
+dbt-bigquery
+
+# --- Step 5: QUALITY (Great Expectations) ---
+# great-expectations
+
+# --- Step 7: SERVE (API) ---
+fastapi
+uvicorn
+
+# --- Step 8: MONITOR (Alerts) ---
+slack-sdk

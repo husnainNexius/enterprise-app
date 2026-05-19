@@ -1,0 +1,38 @@
+version: 2
+
+sources:
+  - name: postgres
+    description: "Raw data from PostgreSQL production database"
+    database: "{{ var('project_id', 'your-gcp-project') }}"
+    schema: raw_postgres
+
+    loaded_at_field: _loaded_at
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+
+    tables:
+      - name: users
+        description: "Application users"
+        columns:
+          - name: id
+            description: "Primary key"
+            tests: [unique, not_null]
+
+      - name: orders
+        description: "Customer orders"
+        columns:
+          - name: id
+            tests: [unique, not_null]
+          - name: user_id
+            tests: [not_null]
+          - name: status
+            tests:
+              - accepted_values:
+                  values: ['pending', 'processing', 'shipped', 'delivered', 'cancelled']
+
+      - name: products
+        description: "Product catalog"
+        columns:
+          - name: id
+            tests: [unique, not_null]

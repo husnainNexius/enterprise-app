@@ -1,0 +1,26 @@
+# ============================================================
+# dbt PROFILES — Copy this to ~/.dbt/profiles.yml
+# Replace YOUR_* placeholders with your actual values
+# ============================================================
+
+data_pipeline:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: YOUR_GCP_PROJECT_ID           # ← Replace
+      dataset: analytics_dev
+      threads: 4
+      keyfile: YOUR_PATH/service-account.json # ← Replace
+      location: US
+      timeout_seconds: 300
+
+    prod:
+      type: bigquery
+      method: service-account
+      project: YOUR_GCP_PROJECT_ID           # ← Replace
+      dataset: analytics_prod
+      threads: 8
+      keyfile: YOUR_PATH/service-account.json # ← Replace
+      location: US
